@@ -24,8 +24,8 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: type_name
-                  type: VARCHAR(255)
+                  name: type
+                  type: VARCHAR(50)
                   constraints:
                     nullable: false
               - column:
@@ -35,7 +35,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: daily_fee
-                  type: DECIMAL(19,2)
+                  type: DECIMAL(10,2)
                   constraints:
                     nullable: false
               - column:
