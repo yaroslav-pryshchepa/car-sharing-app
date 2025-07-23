@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create-cars-table
+      id: 02-create-users-table
       author: yaroslav-pryshchepa
       changes:
         - createTable:
-            tableName: cars
+            tableName: users
             columns:
               - column:
                   name: id
@@ -14,28 +14,24 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: model
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
-                  name: brand
+                  name: first_name
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
-                  name: name
+                  name: last_name
                   type: VARCHAR(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: inventory
-                  type: INT
-                  constraints:
-                    nullable: false
-              - column:
-                  name: daily_fee
-                  type: DECIMAL(19,2)
                   constraints:
                     nullable: false
               - column:
