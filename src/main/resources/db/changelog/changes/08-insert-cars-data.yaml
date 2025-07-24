@@ -1,0 +1,92 @@
+databaseChangeLog:
+  - changeSet:
+      id: 08-insert-cars-data
+      author: yaroslav-pryshchepa
+      changes:
+        - insert:
+            tableName: cars
+            columns:
+              - column:
+                  name: model
+                  value: Camry
+              - column:
+                  name: brand
+                  value: Toyota
+              - column:
+                  name: type_name
+                  value: SEDAN
+              - column:
+                  name: inventory
+                  valueNumeric: 5
+              - column:
+                  name: daily_fee
+                  valueNumeric: 45.00
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: cars
+            columns:
+              - column:
+                  name: model
+                  value: CX-5
+              - column:
+                  name: brand
+                  value: Mazda
+              - column:
+                  name: type_name
+                  value: SUV
+              - column:
+                  name: inventory
+                  valueNumeric: 3
+              - column:
+                  name: daily_fee
+                  valueNumeric: 55.00
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: cars
+            columns:
+              - column:
+                  name: model
+                  value: Golf
+              - column:
+                  name: brand
+                  value: Volkswagen
+              - column:
+                  name: type_name
+                  value: HATCHBACK
+              - column:
+                  name: inventory
+                  valueNumeric: 7
+              - column:
+                  name: daily_fee
+                  valueNumeric: 35.00
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: cars
+            columns:
+              - column:
+                  name: model
+                  value: Passat Variant
+              - column:
+                  name: brand
+                  value: Volkswagen
+              - column:
+                  name: type_name
+                  value: UNIVERSAL
+              - column:
+                  name: inventory
+                  valueNumeric: 4
+              - column:
+                  name: daily_fee
+                  valueNumeric: 48.00
+              - column:
+                  name: is_deleted
+                  valueBoolean: false

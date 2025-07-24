@@ -11,3 +11,7 @@ databaseChangeLog:
       file: db/changelog/changes/05-insert-roles-data.yaml
   - include:
       file: db/changelog/changes/06-insert-users-data.yaml
+  - include:
+      file: db/changelog/changes/07-create-rentals-table.yaml
+  - include:
+      file: db/changelog/changes/08-insert-cars-data.yaml
