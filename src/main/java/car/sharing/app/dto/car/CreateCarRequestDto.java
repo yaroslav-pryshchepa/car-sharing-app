@@ -11,12 +11,13 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class CreateCarRequestDto {
+
     @NotBlank
     private String model;
     @NotBlank
     private String brand;
     @NotNull
-    private TypeName name;
+    private TypeName typeName;
     @Positive
     private int inventory;
     @Positive

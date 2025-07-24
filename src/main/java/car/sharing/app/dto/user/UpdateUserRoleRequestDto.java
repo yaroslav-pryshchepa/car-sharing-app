@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class UpdateUserRoleRequestDto {
-    @NotBlank(message = "Wrong role")
+    @NotBlank
     private String role;
 }

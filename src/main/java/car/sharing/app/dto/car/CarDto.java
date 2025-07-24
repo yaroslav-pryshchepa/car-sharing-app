@@ -11,7 +11,7 @@ public class CarDto {
     private Long id;
     private String model;
     private String brand;
-    private TypeName name;
+    private TypeName typeName;
     private int inventory;
     private BigDecimal dailyFee;
 }
