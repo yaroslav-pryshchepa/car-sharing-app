@@ -6,6 +6,7 @@ import car.sharing.app.exception.EntityNotFoundException;
 import car.sharing.app.mapper.RentalMapper;
 import car.sharing.app.model.Car;
 import car.sharing.app.model.Rental;
+import car.sharing.app.model.RoleName;
 import car.sharing.app.model.User;
 import car.sharing.app.repository.car.CarRepository;
 import car.sharing.app.repository.rental.RentalRepository;
@@ -14,6 +15,8 @@ import car.sharing.app.service.RentalService;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,17 +55,35 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    @Transactional
-    public List<RentalDto> findAllByUserIdAndIsActive(Long userId, boolean isActive) {
+    @Transactional(readOnly = true)
+    public List<RentalDto> getRentals(Long userId, Boolean isActive, Authentication authentication) {
+        User currentUser = (User) authentication.getPrincipal();
+
+        boolean isManager = currentUser.getRoles().stream()
+                .anyMatch(role -> role.getName() == RoleName.MANAGER);
+
+        if (!isManager && userId != null && !userId.equals(currentUser.getId())) {
+            throw new AccessDeniedException(
+                    "You are not allowed to view rentals of another user.");
+        }
+
+        if (!isManager && userId == null) {
+            userId = currentUser.getId();
+        }
+
+        List<Rental> rentals = (userId != null)
+                ? rentalRepository.findAllByUserId(userId)
+                : rentalRepository.findAll();
+
         LocalDate today = LocalDate.now();
-
-        return rentalRepository.findAllByUserId(userId).stream()
+        return rentals.stream()
                 .filter(rental -> {
-                    boolean currentlyActive =
-                            rental.getActualReturnDate() == null
-                                    && !today.isBefore(rental.getRentalDate())
-                                    && !today.isAfter(rental.getReturnDate());
-
+                    if (isActive == null) {
+                        return true;
+                    }
+                    boolean currentlyActive = rental.getActualReturnDate() == null
+                            && !today.isBefore(rental.getRentalDate())
+                            && !today.isAfter(rental.getReturnDate());
                     return isActive == currentlyActive;
                 })
                 .map(rentalMapper::toDto)
@@ -70,10 +91,22 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    @Transactional
-    public RentalDto findById(Long id) {
+    @Transactional(readOnly = true)
+    public RentalDto findById(Long id, Authentication authentication) {
+        User currentUser = (User) authentication.getPrincipal();
+
+        boolean isManager = currentUser.getRoles().stream()
+                .anyMatch(role -> role.getName() == RoleName.MANAGER);
+
         Rental rental = rentalRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Rental not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Rental not found with id: " + id));
+
+        if (!isManager && !rental.getUser().getId().equals(currentUser.getId())) {
+            throw new AccessDeniedException(
+                    "You are not allowed to view this rental.");
+        }
+
         return rentalMapper.toDto(rental);
     }
 
@@ -81,8 +114,8 @@ public class RentalServiceImpl implements RentalService {
     @Transactional
     public RentalDto returnRental(Long rentalId) {
         Rental rental = rentalRepository.findById(rentalId)
-                .orElseThrow(
-                        () -> new EntityNotFoundException("Rental not found with id: " + rentalId));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Rental not found with id: " + rentalId));
 
         if (rental.getActualReturnDate() != null) {
             throw new IllegalStateException("Rental already returned");
@@ -97,4 +130,3 @@ public class RentalServiceImpl implements RentalService {
         return rentalMapper.toDto(rental);
     }
 }
-

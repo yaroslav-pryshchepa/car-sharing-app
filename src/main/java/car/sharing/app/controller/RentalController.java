@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,17 +39,17 @@ public class RentalController {
     @Operation(summary = "Get rentals by user and status",
             description = "Returns rentals filtered by userId and isActive")
     public List<RentalDto> getRentals(
-            @RequestParam("user_id") Long userId,
-            @RequestParam("is_active") Boolean isActive
-    ) {
-        return rentalService.findAllByUserIdAndIsActive(userId, isActive);
+            @RequestParam(required = false, name = "user_id") Long userId,
+            @RequestParam(required = false, name = "is_active") Boolean isActive,
+            Authentication authentication) {
+        return rentalService.getRentals(userId, isActive, authentication);
     }
 
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MANAGER')")
     @GetMapping("/{id}")
     @Operation(summary = "Get rental by ID", description = "Returns rental by its ID")
-    public RentalDto getRentalById(@PathVariable Long id) {
-        return rentalService.findById(id);
+    public RentalDto getRentalById(@PathVariable Long id, Authentication authentication) {
+        return rentalService.findById(id, authentication);
     }
 
     @PreAuthorize("hasAnyRole('CUSTOMER', 'MANAGER')")
