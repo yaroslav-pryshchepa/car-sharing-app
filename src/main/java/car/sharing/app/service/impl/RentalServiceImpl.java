@@ -56,7 +56,8 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RentalDto> getRentals(Long userId, Boolean isActive, Authentication authentication) {
+    public List<RentalDto> getRentals(Long userId, Boolean isActive,
+            Authentication authentication) {
         User currentUser = (User) authentication.getPrincipal();
 
         boolean isManager = currentUser.getRoles().stream()
