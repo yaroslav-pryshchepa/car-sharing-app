@@ -11,6 +11,7 @@ import car.sharing.app.model.User;
 import car.sharing.app.repository.car.CarRepository;
 import car.sharing.app.repository.rental.RentalRepository;
 import car.sharing.app.repository.user.UserRepository;
+import car.sharing.app.service.NotificationService;
 import car.sharing.app.service.RentalService;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,6 +29,7 @@ public class RentalServiceImpl implements RentalService {
     private final CarRepository carRepository;
     private final UserRepository userRepository;
     private final RentalMapper rentalMapper;
+    private final NotificationService notificationService;
 
     @Override
     @Transactional
@@ -51,6 +53,14 @@ public class RentalServiceImpl implements RentalService {
         car.setInventory(car.getInventory() - 1);
         carRepository.save(car);
         rentalRepository.save(rental);
+        notificationService.sendMessage(String.format(
+                "🚗 Створено нову аренду!\n"
+                        + "Користувач: %s\n"
+                        + "Машина: %s\n"
+                        + "Дата початку аренди: %s\n"
+                        + "Дата повернення: %s",
+                user.getEmail(), car.getModel(), rental.getRentalDate(), rental.getReturnDate()
+        ));
         return rentalMapper.toDto(rental);
     }
 

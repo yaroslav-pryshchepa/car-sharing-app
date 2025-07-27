@@ -10,8 +10,6 @@ import lombok.experimental.Accessors;
 public class CreateRentalRequestDto {
 
     @NotNull
-    private LocalDate rentalDate;
-    @NotNull
     private LocalDate returnDate;
     @NotNull
     private Long carId;
