@@ -57,7 +57,7 @@ public class RentalServiceImpl implements RentalService {
                 "🚗 Створено нову аренду!\n"
                         + "Користувач: %s\n"
                         + "Машина: %s\n"
-                        + "Дата початку аренди: %s\n"
+                        + "Дата початку оренди: %s\n"
                         + "Дата повернення: %s",
                 user.getEmail(), car.getModel(), rental.getRentalDate(), rental.getReturnDate()
         ));
