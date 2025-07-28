@@ -16,6 +16,7 @@ import car.sharing.app.service.RentalService;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -139,5 +140,36 @@ public class RentalServiceImpl implements RentalService {
         System.out.println(rental.getActualReturnDate());
         rentalRepository.save(rental);
         return rentalMapper.toDto(rental);
+    }
+
+    @Scheduled(cron = "${scheduler.rental.overdue.cron}")
+    @Transactional(readOnly = true)
+    public void notifyOverdueRentals() {
+        LocalDate today = LocalDate.now();
+
+        List<Rental> overdueRentals = rentalRepository.findAll().stream()
+                .filter(rental -> rental.getActualReturnDate() == null
+                        && !rental.getReturnDate().isAfter(today))
+                .toList();
+
+        if (overdueRentals.isEmpty()) {
+            notificationService.sendMessage("✅ Сьогодні немає простроченої оренди!");
+            return;
+        }
+
+        for (Rental rental : overdueRentals) {
+            String message = String.format(
+                    "⚠️ Повідомлення про прострочену оренду!\n"
+                            + "Користувач: %s\n"
+                            + "Машина: %s\n"
+                            + "Дата початку оренди: %s\n"
+                            + "Дата повернення: %s",
+                    rental.getUser().getEmail(),
+                    rental.getCar().getModel(),
+                    rental.getRentalDate(),
+                    rental.getReturnDate()
+            );
+            notificationService.sendMessage(message);
+        }
     }
 }
