@@ -16,9 +16,21 @@ public class NotificationServiceImpl implements NotificationService {
     private final String telegramChatId;
 
     public NotificationServiceImpl() {
-        Dotenv dotenv = Dotenv.load();
-        this.telegramBotToken = dotenv.get("TELEGRAM_BOT_TOKEN");
-        this.telegramChatId = dotenv.get("TELEGRAM_CHAT_ID");
+        String token = System.getenv("TELEGRAM_BOT_TOKEN");
+        String chatId = System.getenv("TELEGRAM_CHAT_ID");
+
+        if (token == null || chatId == null) {
+            Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+            if (token == null) {
+                token = dotenv.get("TELEGRAM_BOT_TOKEN");
+            }
+            if (chatId == null) {
+                chatId = dotenv.get("TELEGRAM_CHAT_ID");
+            }
+        }
+
+        this.telegramBotToken = token;
+        this.telegramChatId = chatId;
     }
 
     @Override
