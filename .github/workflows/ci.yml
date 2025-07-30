@@ -25,6 +25,7 @@ jobs:
           echo "jwt.expiration=3000000" >> src/main/resources/application.properties
           echo "telegram.bot.token=${{ secrets.TELEGRAM_BOT_TOKEN }}" >> src/main/resources/application.properties
           echo "telegram.chat.id=${{ secrets.TELEGRAM_CHAT_ID }}" >> src/main/resources/application.properties
+          echo "scheduler.rental.overdue.cron=${{ secrets.SCHEDULER_RENTAL_OVERDUE_CRON }}" >> src/main/resources/application.properties
           echo "stripe.secret.key=${{ secrets.STRIPE_SECRET_KEY }}" >> src/main/resources/application.properties
           echo "app.base-url=${{ secrets.APP_BASE_URL }}" >> src/main/resources/application.properties
           echo "fine.multiplier=${{ secrets.FINE_MULTIPLIER }}" >> src/main/resources/application.properties
