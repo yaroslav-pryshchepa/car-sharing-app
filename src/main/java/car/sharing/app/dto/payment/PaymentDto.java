@@ -12,7 +12,7 @@ public class PaymentDto {
 
     private Long id;
     private PaymentStatus status;
-    private PaymentType type;
+    private PaymentType paymentType;
     private Long rentalId;
     private BigDecimal amountToPay;
     private String sessionUrl;

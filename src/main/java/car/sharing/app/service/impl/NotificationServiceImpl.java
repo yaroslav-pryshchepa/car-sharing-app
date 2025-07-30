@@ -1,10 +1,10 @@
 package car.sharing.app.service.impl;
 
 import car.sharing.app.service.NotificationService;
-import io.github.cdimascio.dotenv.Dotenv;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -12,26 +12,10 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class NotificationServiceImpl implements NotificationService {
 
-    private final String telegramBotToken;
-    private final String telegramChatId;
-
-    public NotificationServiceImpl() {
-        String token = System.getenv("TELEGRAM_BOT_TOKEN");
-        String chatId = System.getenv("TELEGRAM_CHAT_ID");
-
-        if (token == null || chatId == null) {
-            Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-            if (token == null) {
-                token = dotenv.get("TELEGRAM_BOT_TOKEN");
-            }
-            if (chatId == null) {
-                chatId = dotenv.get("TELEGRAM_CHAT_ID");
-            }
-        }
-
-        this.telegramBotToken = token;
-        this.telegramChatId = chatId;
-    }
+    @Value("${telegram.bot.token}")
+    private String telegramBotToken;
+    @Value("${telegram.chat.id}")
+    private String telegramChatId;
 
     @Override
     public void sendMessage(String message) {

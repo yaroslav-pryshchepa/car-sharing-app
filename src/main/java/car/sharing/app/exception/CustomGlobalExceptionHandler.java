@@ -120,6 +120,17 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                 .body("Invalid parameter: " + ex.getMessage());
     }
 
+    @ExceptionHandler(PaymentAlreadyExistsException.class)
+    public ResponseEntity<Object> handlePaymentAlreadyExistsException(
+            PaymentAlreadyExistsException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("error", "Bad Request");
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
     private String getErrorMessage(ObjectError e) {
         if (e instanceof FieldError fieldError) {
             return fieldError.getField() + " " + fieldError.getDefaultMessage();
