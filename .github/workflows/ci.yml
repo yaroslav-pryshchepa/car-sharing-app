@@ -21,6 +21,16 @@ jobs:
       - name: Create application.properties
         run: |
           mkdir -p src/main/resources
+          echo "spring.application.name=car.sharing.app" >> src/main/resources/application.properties
+          echo "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MYSQL" >> src/main/resources/application.properties
+          echo "spring.datasource.driver-class-name=org.h2.Driver" >> src/main/resources/application.properties
+          echo "spring.datasource.username=sa" >> src/main/resources/application.properties
+          echo "spring.datasource.password=" >> src/main/resources/application.properties
+          echo "spring.jpa.hibernate.ddl-auto=update" >> src/main/resources/application.properties
+          echo "spring.jpa.show-sql=true" >> src/main/resources/application.properties
+          echo "spring.jackson.deserialization.fail-on-unknown-properties=true" >> src/main/resources/application.properties
+          echo "spring.docker.compose.enabled=false" >> src/main/resources/application.properties
+
           echo "jwt.secret=${{ secrets.JWT_SECRET }}" >> src/main/resources/application.properties
           echo "jwt.expiration=3000000" >> src/main/resources/application.properties
           echo "telegram.bot.token=${{ secrets.TELEGRAM_BOT_TOKEN }}" >> src/main/resources/application.properties
