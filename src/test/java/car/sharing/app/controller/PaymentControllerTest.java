@@ -6,6 +6,8 @@ import static car.sharing.app.util.PaymentUtil.createPaymentRequestDto;
 import static org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -14,6 +16,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import car.sharing.app.config.WithMockCustomUser;
 import car.sharing.app.dto.payment.CreatePaymentRequestDto;
 import car.sharing.app.dto.payment.PaymentDto;
+import car.sharing.app.dto.payment.PaymentResponseDto;
+import car.sharing.app.service.StripeService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.sql.Connection;
@@ -22,6 +26,7 @@ import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +34,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -60,6 +66,9 @@ class PaymentControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @MockitoBean
+    private StripeService stripeService;
+
     @BeforeAll
     static void beforeAll(@Autowired WebApplicationContext context,
             @Autowired DataSource dataSource) {
@@ -67,6 +76,12 @@ class PaymentControllerTest {
                 .apply(springSecurity())
                 .build();
         teardown(dataSource);
+    }
+
+    @BeforeEach
+    void setUp() {
+        when(stripeService.createStripeSession(any(), any(), any(), any()))
+                .thenReturn(new PaymentResponseDto("sess_1", "http://example.com/success1"));
     }
 
     @AfterEach
