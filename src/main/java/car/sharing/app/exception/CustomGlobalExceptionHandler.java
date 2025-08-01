@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -73,6 +75,56 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         body.put("message", fallbackMessage);
 
         return new ResponseEntity<>(body, headers, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> handleBadCredentialsException(
+            BadCredentialsException ex,
+            WebRequest request
+    ) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("error", "Unauthorized");
+        body.put("message", "Invalid credentials");
+        body.put("path", request.getDescription(false).replace("uri=", ""));
+
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<Object> handleAuthenticationException(
+            AuthenticationException ex,
+            WebRequest request
+    ) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("error", "Unauthorized");
+        body.put("message", "Authentication failed");
+        body.put("path", request.getDescription(false).replace("uri=", ""));
+
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Object> handleRuntimeException(
+            RuntimeException ex,
+            WebRequest request
+    ) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("path", request.getDescription(false).replace("uri=", ""));
+
+        if (ex.getMessage() != null && ex.getMessage().toLowerCase()
+                .contains("invalid credentials")) {
+            body.put("error", "Unauthorized");
+            body.put("message", "Invalid credentials");
+            return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+        }
+
+        body.put("error", "Internal Server Error");
+        body.put("message",
+                ex.getMessage() != null ? ex.getMessage() : "An unexpected error occurred");
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)

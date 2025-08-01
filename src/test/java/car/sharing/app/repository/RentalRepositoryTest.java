@@ -20,13 +20,24 @@ class RentalRepositoryTest {
 
     @Test
     @Sql(scripts = {
+            "classpath:database/delete-payments.sql",
             "classpath:database/delete-rentals.sql",
-            "classpath:database/insert-rentals.sql"
+            "classpath:database/delete-cars.sql",
+            "classpath:database/delete-users-and-roles.sql",
+            "classpath:database/insert-users-and-roles.sql",
+            "classpath:database/insert-cars.sql",
+            "classpath:database/insert-rentals.sql",
+            "classpath:database/insert-payments.sql"
     }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/delete-rentals.sql",
+    @Sql(scripts = {
+            "classpath:database/delete-payments.sql",
+            "classpath:database/delete-rentals.sql",
+            "classpath:database/delete-cars.sql",
+            "classpath:database/delete-users-and-roles.sql"
+    },
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void testFindAllByUserId() {
         List<Rental> rentals = rentalRepository.findAllByUserId(1L);
-        assertEquals(2, rentals.size());
+        assertEquals(3, rentals.size());
     }
 }

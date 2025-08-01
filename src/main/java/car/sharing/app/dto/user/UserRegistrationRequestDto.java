@@ -4,10 +4,12 @@ import car.sharing.app.validation.FieldMatch;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
 @FieldMatch(first = "password", second = "repeatPassword", message = "Passwords do not match")
 @Data
+@Accessors(chain = true)
 public class UserRegistrationRequestDto {
     @NotBlank
     @Email
