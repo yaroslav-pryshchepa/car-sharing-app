@@ -1,0 +1,631 @@
+{
+  "info": {
+    "_postman_id": "car-sharing-api-collection",
+    "name": "Car Sharing App API",
+    "description": "Comprehensive API collection for car sharing application with authentication, car management, rentals, payments, and user management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "car-sharing-app"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"securePassword123\",\n  \"repeatPassword\": \"securePassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/registration",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "registration"
+              ]
+            },
+            "description": "Register a new user in the system"
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('accessToken', response.token);",
+                  "    console.log('Access token saved to environment');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"securePassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Authenticate user and get access token"
+          },
+          "response": []
+        }
+      ],
+      "description": "Authentication endpoints for user registration and login"
+    },
+    {
+      "name": "Cars",
+      "item": [
+        {
+          "name": "Create Car (Manager Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"Toyota Camry\",\n  \"brand\": \"Toyota\",\n  \"type\": \"SEDAN\",\n  \"inventory\": 5,\n  \"dailyFee\": 45.00\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/cars",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cars"
+              ]
+            },
+            "description": "Create a new car (Manager role required)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Cars",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cars?page=0&size=10&sort=id,asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cars"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0",
+                  "description": "Page number (0-based)"
+                },
+                {
+                  "key": "size",
+                  "value": "10",
+                  "description": "Number of items per page"
+                },
+                {
+                  "key": "sort",
+                  "value": "id,asc",
+                  "description": "Sort criteria (field,direction)"
+                }
+              ]
+            },
+            "description": "Get paginated list of all cars"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Car by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cars/{{carId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cars",
+                "{{carId}}"
+              ]
+            },
+            "description": "Get detailed information about a specific car"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Car (Manager Only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"Toyota Camry 2024\",\n  \"brand\": \"Toyota\",\n  \"type\": \"SEDAN\",\n  \"inventory\": 3,\n  \"dailyFee\": 50.00\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/cars/{{carId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cars",
+                "{{carId}}"
+              ]
+            },
+            "description": "Update car information (Manager role required)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Car (Manager Only)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cars/{{carId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cars",
+                "{{carId}}"
+              ]
+            },
+            "description": "Delete a car by ID (Manager role required)"
+          },
+          "response": []
+        }
+      ],
+      "description": "Car management endpoints"
+    },
+    {
+      "name": "Rentals",
+      "item": [
+        {
+          "name": "Create Rental",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"carId\": {{carId}},\n  \"rentalDate\": \"2025-08-05\",\n  \"returnDate\": \"2025-08-10\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rentals",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rentals"
+              ]
+            },
+            "description": "Create a new car rental"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Rentals",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rentals?user_id={{userId}}&is_active=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rentals"
+              ],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "{{userId}}",
+                  "description": "Filter by user ID (optional)"
+                },
+                {
+                  "key": "is_active",
+                  "value": "true",
+                  "description": "Filter by active status (optional)"
+                }
+              ]
+            },
+            "description": "Get rentals filtered by user ID and active status"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Rental by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rentals/{{rentalId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rentals",
+                "{{rentalId}}"
+              ]
+            },
+            "description": "Get specific rental by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Return Rental",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rentals/{{rentalId}}/return",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rentals",
+                "{{rentalId}}",
+                "return"
+              ]
+            },
+            "description": "Return a rented car and set actual return date"
+          },
+          "response": []
+        }
+      ],
+      "description": "Rental management endpoints"
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Create Payment Session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rentalId\": {{rentalId}},\n  \"type\": \"PAYMENT\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments"
+              ]
+            },
+            "description": "Create a payment session for a rental"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Payments by User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/payments?user_id={{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments"
+              ],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "{{userId}}",
+                  "description": "Filter by user ID (optional)"
+                }
+              ]
+            },
+            "description": "Get payments filtered by user ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Payment Success Callback",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/payments/success?session_id={{sessionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments",
+                "success"
+              ],
+              "query": [
+                {
+                  "key": "session_id",
+                  "value": "{{sessionId}}",
+                  "description": "Stripe session ID"
+                }
+              ]
+            },
+            "description": "Handle successful Stripe payment callback"
+          },
+          "response": []
+        },
+        {
+          "name": "Payment Cancel Callback",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/payments/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments",
+                "cancel"
+              ]
+            },
+            "description": "Handle canceled Stripe payment callback"
+          },
+          "response": []
+        }
+      ],
+      "description": "Payment management endpoints"
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Update User Role (Manager Only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"MANAGER\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/role",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}",
+                "role"
+              ]
+            },
+            "description": "Update user role (Manager role required)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            },
+            "description": "Get current authenticated user's profile"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Current User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"email\": \"john.smith@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            },
+            "description": "Update current authenticated user's profile"
+          },
+          "response": []
+        }
+      ],
+      "description": "User management endpoints"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string",
+      "description": "Base URL for the car sharing API"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string",
+      "description": "JWT access token for authentication"
+    },
+    {
+      "key": "carId",
+      "value": "1",
+      "type": "string",
+      "description": "Sample car ID for testing"
+    },
+    {
+      "key": "userId",
+      "value": "1",
+      "type": "string",
+      "description": "Sample user ID for testing"
+    },
+    {
+      "key": "rentalId",
+      "value": "1",
+      "type": "string",
+      "description": "Sample rental ID for testing"
+    },
+    {
+      "key": "sessionId",
+      "value": "cs_test_session_id",
+      "type": "string",
+      "description": "Sample Stripe session ID for testing"
+    }
+  ]
+}

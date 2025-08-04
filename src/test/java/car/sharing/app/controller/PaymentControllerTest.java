@@ -113,8 +113,7 @@ class PaymentControllerTest {
 
         PaymentDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),
                 PaymentDto.class);
-        System.out.println("expected: " + expected);
-        System.out.println("actual: " + actual);
+
         assertTrue(reflectionEquals(expected, actual, "id", "sessionUrl", "sessionId",
                 "amountToPay"));
     }

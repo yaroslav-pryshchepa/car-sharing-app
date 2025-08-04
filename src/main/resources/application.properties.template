@@ -13,8 +13,6 @@ spring.jackson.deserialization.fail-on-unknown-properties=true
 jwt.expiration=3000000
 jwt.secret=${JWT_SECRET}
 
-spring.docker.compose.enabled=false
-
 telegram.bot.token=${TELEGRAM_BOT_TOKEN}
 telegram.chat.id=${TELEGRAM_CHAT_ID}
 

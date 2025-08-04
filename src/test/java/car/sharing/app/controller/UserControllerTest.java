@@ -102,9 +102,6 @@ class UserControllerTest {
         UserResponseDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),
                 UserResponseDto.class);
 
-        System.out.println("expected: " + expected);
-        System.out.println("actual: " + actual);
-
         assertTrue(reflectionEquals(expected, actual));
     }
 
@@ -120,9 +117,6 @@ class UserControllerTest {
 
         UserResponseDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),
                 UserResponseDto.class);
-
-        System.out.println("expected: " + expected);
-        System.out.println("actual: " + actual);
 
         assertTrue(reflectionEquals(expected, actual, "id"));
     }

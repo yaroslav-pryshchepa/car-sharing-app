@@ -8,6 +8,8 @@ RUN mvn dependency:go-offline
 
 # Copy source files
 COPY src ./src
+COPY checkstyle.xml .
+COPY checkstyle-suppressions.xml .
 
 # Build the application
 RUN mvn clean package -DskipTests
