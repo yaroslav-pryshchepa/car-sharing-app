@@ -59,7 +59,7 @@ public class PaymentController {
             @RequestParam(value = "session_id", required = false) String sessionId
     ) {
         paymentService.markPaymentCompleted(sessionId);
-        return ResponseEntity.ok("Оплата пройшла успішно"
+        return ResponseEntity.ok("Payment was successful"
                 + (sessionId != null ? " (Session ID: " + sessionId + ")" : "") + ".");
     }
 
@@ -68,9 +68,9 @@ public class PaymentController {
     @Operation(summary = "Handle canceled Stripe payment",
             description = "Informs the user that the payment was canceled")
     public ResponseEntity<String> handleStripeCancel() {
-        String message = "Оплата була скасована. "
-                + "Ви можете завершити оплату пізніше за посиланням, яке дійсне протягом 24 годин"
-                + "з моменту створення сесії оплати.";
+        String message = "Payment was canceled. "
+                + "You can complete the payment later using the link, which is valid for 24 hours "
+                + "from the moment the payment session was created.";
         return ResponseEntity.ok(message);
     }
 }

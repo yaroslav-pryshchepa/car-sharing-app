@@ -13,19 +13,16 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     nullable: false
-
               - column:
                   name: status
                   type: VARCHAR(20)
                   constraints:
                     nullable: false
-
               - column:
                   name: payment_type
                   type: VARCHAR(20)
                   constraints:
                     nullable: false
-
               - column:
                   name: rental_id
                   type: BIGINT
@@ -34,25 +31,21 @@ databaseChangeLog:
                     foreignKeyName: fk_payments_rental
                     referencedTableName: rentals
                     referencedColumnNames: id
-
               - column:
                   name: session_url
                   type: VARCHAR(1024)
                   constraints:
                     nullable: true
-
               - column:
                   name: session_id
                   type: VARCHAR(255)
                   constraints:
                     nullable: true
-
               - column:
                   name: amount_to_pay
                   type: DECIMAL(10,2)
                   constraints:
                     nullable: false
-
               - column:
                   name: is_deleted
                   type: TINYINT(1)

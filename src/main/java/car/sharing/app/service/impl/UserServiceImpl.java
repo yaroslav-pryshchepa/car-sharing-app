@@ -43,8 +43,8 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException("Role not found: "
                         + RoleName.CUSTOMER));
         user.setRoles(Set.of(userRole));
-        User savedUser = userRepository.save(user);
-        return userMapper.toDto(savedUser);
+        userRepository.save(user);
+        return userMapper.toDto(user);
     }
 
     @Override
@@ -62,8 +62,8 @@ public class UserServiceImpl implements UserService {
                         + requestDto.getRole()));
         user.getRoles().clear();
         user.getRoles().add(role);
-        User updatedUser = userRepository.save(user);
-        return userMapper.toDto(updatedUser);
+        userRepository.save(user);
+        return userMapper.toDto(user);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(requestDto.getFirstName());
         user.setLastName(requestDto.getLastName());
         user.setEmail(requestDto.getEmail());
-        User updatedUser = userRepository.save(user);
-        return userMapper.toDto(updatedUser);
+        userRepository.save(user);
+        return userMapper.toDto(user);
     }
 }

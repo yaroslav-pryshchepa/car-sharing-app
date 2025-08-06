@@ -11,11 +11,9 @@ public class RentalDto {
     private LocalDate rentalDate;
     private LocalDate returnDate;
     private LocalDate actualReturnDate;
-
     private Long carId;
     private String carModel;
     private String carBrand;
-
     private Long userId;
     private String userEmail;
 }

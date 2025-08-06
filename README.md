@@ -1,11 +1,12 @@
-## 🚗 Car Sharing API 🚗
+# 🚗 Car Sharing API 🚗
 
-### Intro
-Welcome to the Car Sharing Service Backend — a scalable, modular RESTful API built with Java and Spring Boot.
-This project powers a comprehensive car sharing management system, offering endpoints to manage users, cars, rentals, payments, and other core functionalities, all while ensuring strong security and thorough documentation.
-The main technology behind the project is Java and Spring Boot. It has all the necessities of a modern day Web application, an online car sharing service in particular. Let me show you the details!
-The system is designed following a Layered Architecture, which ensures clear separation of concerns, easier maintenance, and future scalability.
-It integrates modern backend technologies and tools to simplify development, improve testing and deployment processes, and enhance security.
+## Introduction
+
+The Car Sharing Service Backend is a scalable, modular RESTful API built with Java and Spring Boot.  
+It powers a comprehensive car sharing management system, providing endpoints to manage users, cars, rentals, payments, and other core functionalities — all while ensuring strong security and thorough documentation.
+
+The system follows a **Layered Architecture**, which ensures a clear separation of concerns, easier maintenance, and future scalability.  
+It integrates modern backend technologies and tools to simplify development, improve testing and deployment processes, and enhance overall security, making it a solid foundation for a modern web-based car sharing service.
 ---
 ### Challenges faced
  - Configuring Docker to work with an existing MySQL database running inside a container
@@ -63,7 +64,7 @@ It integrates modern backend technologies and tools to simplify development, imp
     - Maven
     - MySQL
     - Docker
-- Clone the repository
+- Clone the repository (see instructions below)
 - Create an env file (a template is provided, see "env.template" file)
 - Create an application.properties file (a template is provided, see "application.properties.template" file)
 - Run the following commands:

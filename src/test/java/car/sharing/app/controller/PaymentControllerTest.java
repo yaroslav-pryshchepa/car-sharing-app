@@ -148,6 +148,6 @@ class PaymentControllerTest {
                 .andReturn();
 
         String response = result.getResponse().getContentAsString();
-        assertTrue(response.contains("Оплата була скасована"));
+        assertTrue(response.contains("Payment was canceled."));
     }
 }

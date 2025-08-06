@@ -137,7 +137,6 @@ public class RentalServiceImpl implements RentalService {
         Car car = rental.getCar();
         car.setInventory(car.getInventory() + 1);
         carRepository.save(car);
-        System.out.println(rental.getActualReturnDate());
         rentalRepository.save(rental);
         return rentalMapper.toDto(rental);
     }

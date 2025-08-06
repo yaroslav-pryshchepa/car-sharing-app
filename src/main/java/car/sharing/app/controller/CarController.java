@@ -30,6 +30,7 @@ public class CarController {
 
     @PreAuthorize("hasRole('MANAGER')")
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Save a new car", description = "Save a new car")
     public CarDto save(@RequestBody @Valid CreateCarRequestDto requestDto) {
         return carService.save(requestDto);

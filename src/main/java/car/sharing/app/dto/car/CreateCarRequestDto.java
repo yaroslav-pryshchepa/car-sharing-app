@@ -20,6 +20,7 @@ public class CreateCarRequestDto {
     private TypeName typeName;
     @Positive
     private int inventory;
+    @NotNull
     @Positive
     private BigDecimal dailyFee;
 }

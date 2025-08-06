@@ -18,4 +18,3 @@ public class PaymentDto {
     private String sessionUrl;
     private String sessionId;
 }
-

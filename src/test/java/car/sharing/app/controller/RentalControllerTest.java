@@ -89,7 +89,7 @@ class RentalControllerTest {
         MvcResult result = mockMvc.perform(post("/rentals")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn();
 
         RentalDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),

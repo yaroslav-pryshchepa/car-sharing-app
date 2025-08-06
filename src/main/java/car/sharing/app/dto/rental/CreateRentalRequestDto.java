@@ -1,6 +1,7 @@
 package car.sharing.app.dto.rental;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.time.LocalDate;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -14,5 +15,6 @@ public class CreateRentalRequestDto {
     @NotNull
     private Long carId;
     @NotNull
+    @Positive
     private Long userId;
 }

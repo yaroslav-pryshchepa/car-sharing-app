@@ -149,7 +149,7 @@ class CarControllerTest {
         MvcResult result = mockMvc.perform(post("/cars")
                         .content(jsonRequest)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn();
 
         CarDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),

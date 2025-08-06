@@ -12,10 +12,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -23,8 +21,6 @@ import org.hibernate.annotations.SQLRestriction;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 @Accessors(chain = true)
 @SQLDelete(sql = "UPDATE payments SET is_deleted = true WHERE id=?")
 @SQLRestriction("is_deleted = false")
@@ -47,13 +43,11 @@ public class Payment {
     @JoinColumn(name = "rental_id", nullable = false)
     private Rental rental;
 
-    @Column(name = "session_url")
     private String sessionUrl;
 
-    @Column(name = "session_id")
     private String sessionId;
 
-    @Column(name = "amount_to_pay", nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal amountToPay;
 
     @Column(nullable = false)

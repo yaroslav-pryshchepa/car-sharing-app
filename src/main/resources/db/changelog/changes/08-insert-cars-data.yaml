@@ -24,7 +24,6 @@ databaseChangeLog:
               - column:
                   name: is_deleted
                   valueBoolean: false
-
         - insert:
             tableName: cars
             columns:
@@ -46,7 +45,6 @@ databaseChangeLog:
               - column:
                   name: is_deleted
                   valueBoolean: false
-
         - insert:
             tableName: cars
             columns:
@@ -68,7 +66,6 @@ databaseChangeLog:
               - column:
                   name: is_deleted
                   valueBoolean: false
-
         - insert:
             tableName: cars
             columns:
