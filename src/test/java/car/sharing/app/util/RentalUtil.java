@@ -1,7 +1,12 @@
 package car.sharing.app.util;
 
+import static car.sharing.app.util.UserUtil.createUser;
+
 import car.sharing.app.dto.rental.CreateRentalRequestDto;
 import car.sharing.app.dto.rental.RentalDto;
+import car.sharing.app.model.Car;
+import car.sharing.app.model.Rental;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class RentalUtil {
@@ -16,6 +21,15 @@ public class RentalUtil {
                 .setCarBrand("Tesla")
                 .setUserId(1L)
                 .setUserEmail("test@example.com");
+    }
+
+    public static Rental createRental(Long id) {
+        return new Rental()
+                .setId(2L)
+                .setUser(createUser(1L))
+                .setCar(new Car().setDailyFee(BigDecimal.valueOf(100)))
+                .setRentalDate(LocalDate.now().minusDays(2))
+                .setReturnDate(LocalDate.now());
     }
 
     public static CreateRentalRequestDto createRentalRequestDto() {

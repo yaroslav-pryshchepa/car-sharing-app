@@ -49,6 +49,14 @@ public class CarUtil {
         return List.of(car1, car2, car3);
     }
 
+    public static Car createCar(Long id) {
+        return new Car()
+                .setId(id)
+                .setModel("Model S")
+                .setBrand("Tesla")
+                .setInventory(2);
+    }
+
     public static CreateCarRequestDto createCarRequestDto() {
         return new CreateCarRequestDto()
                 .setBrand("Tesla")

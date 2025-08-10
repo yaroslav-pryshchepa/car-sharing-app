@@ -1,6 +1,7 @@
 # 🚗 Car Sharing API 🚗
 
-## Introduction
+---
+### Introduction
 
 The Car Sharing Service Backend is a scalable, modular RESTful API built with Java and Spring Boot.  
 It powers a comprehensive car sharing management system, providing endpoints to manage users, cars, rentals, payments, and other core functionalities — all while ensuring strong security and thorough documentation.

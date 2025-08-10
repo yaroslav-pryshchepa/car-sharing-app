@@ -5,6 +5,10 @@ import car.sharing.app.dto.user.UpdateUserRoleRequestDto;
 import car.sharing.app.dto.user.UserLoginRequestDto;
 import car.sharing.app.dto.user.UserRegistrationRequestDto;
 import car.sharing.app.dto.user.UserResponseDto;
+import car.sharing.app.model.Role;
+import car.sharing.app.model.RoleName;
+import car.sharing.app.model.User;
+import java.util.Set;
 
 public class UserUtil {
 
@@ -64,6 +68,32 @@ public class UserUtil {
                 .setEmail("user@example.com")
                 .setFirstName("John")
                 .setLastName("Doe");
+    }
+
+    public static User createUser(Long id) {
+        return new User()
+                .setId(id)
+                .setEmail("test@example.com")
+                .setFirstName("Test")
+                .setLastName("User");
+    }
+
+    public static User createManagerUser(Long id) {
+        return new User()
+                .setId(id)
+                .setEmail("manager@example.com")
+                .setPassword("password")
+                .setFirstName("Manager")
+                .setLastName("User")
+                .setRoles(Set.of(new Role().setName(RoleName.MANAGER)));
+    }
+
+    public static UserRegistrationRequestDto createUserRegistrationRequestDto() {
+        return new UserRegistrationRequestDto()
+                .setEmail("test@example.com")
+                .setPassword("password")
+                .setFirstName("Test")
+                .setLastName("User");
     }
 
     public static UserRegistrationRequestDto createEmptyRegistrationRequest() {
