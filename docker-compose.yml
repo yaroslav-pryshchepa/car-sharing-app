@@ -1,0 +1,43 @@
+services:
+  mysqldb:
+    image: mysql:8
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - ${MYSQL_LOCAL_PORT}:${MYSQL_DOCKER_PORT}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  app:
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+    build: .
+    image: car-sharing-app
+    restart: on-failure
+    env_file:
+      - .env
+    ports:
+      - ${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}
+      - ${DEBUG_PORT}:${DEBUG_PORT}
+    environment:
+      SPRING_APPLICATION_JSON: |
+        {
+          "spring.datasource.url": "${SPRING_DATASOURCE_URL}",
+          "spring.datasource.username": "${SPRING_DATASOURCE_USERNAME}",
+          "spring.datasource.password": "${SPRING_DATASOURCE_PASSWORD}",
+          "spring.datasource.driver-class-name": "${SPRING_DATASOURCE_DRIVER}",
+          "spring.jpa.hibernate.ddl-auto": "${SPRING_JPA_HIBERNATE_DDL_AUTO}",
+          "spring.jpa.show-sql": ${SPRING_JPA_SHOW_SQL},
+          "spring.jackson.deserialization.fail-on-unknown-properties": ${SPRING_JACKSON_FAIL_ON_UNKNOWN_PROPERTIES},
+          "jwt.expiration": ${JWT_EXPIRATION},
+          "jwt.secret": "${JWT_SECRET}",
+          "spring.application.name": "${SPRING_APPLICATION_NAME}"
+        }
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:${DEBUG_PORT}"

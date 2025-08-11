@@ -1,0 +1,44 @@
+name: Java CI
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Create application.properties
+        run: |
+          mkdir -p src/main/resources
+          echo "spring.application.name=car.sharing.app" >> src/main/resources/application.properties
+          echo "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MYSQL" >> src/main/resources/application.properties
+          echo "spring.datasource.driver-class-name=org.h2.Driver" >> src/main/resources/application.properties
+          echo "spring.datasource.username=sa" >> src/main/resources/application.properties
+          echo "spring.datasource.password=" >> src/main/resources/application.properties
+          echo "spring.jpa.hibernate.ddl-auto=update" >> src/main/resources/application.properties
+          echo "spring.jpa.show-sql=true" >> src/main/resources/application.properties
+          echo "spring.jackson.deserialization.fail-on-unknown-properties=true" >> src/main/resources/application.properties
+          echo "spring.docker.compose.enabled=false" >> src/main/resources/application.properties
+
+          echo "jwt.secret=${{ secrets.JWT_SECRET }}" >> src/main/resources/application.properties
+          echo "jwt.expiration=3000000" >> src/main/resources/application.properties
+          echo "telegram.bot.token=${{ secrets.TELEGRAM_BOT_TOKEN }}" >> src/main/resources/application.properties
+          echo "telegram.chat.id=${{ secrets.TELEGRAM_CHAT_ID }}" >> src/main/resources/application.properties
+          echo "scheduler.rental.overdue.cron=${{ secrets.SCHEDULER_RENTAL_OVERDUE_CRON }}" >> src/main/resources/application.properties
+          echo "stripe.secret.key=${{ secrets.STRIPE_SECRET_KEY }}" >> src/main/resources/application.properties
+          echo "app.base-url=${{ secrets.APP_BASE_URL }}" >> src/main/resources/application.properties
+          echo "fine.multiplier=${{ secrets.FINE_MULTIPLIER }}" >> src/main/resources/application.properties
+
+      - name: Build with Maven
+        run: mvn --batch-mode --update-snapshots verify
